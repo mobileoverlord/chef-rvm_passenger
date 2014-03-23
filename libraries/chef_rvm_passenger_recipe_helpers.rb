@@ -35,7 +35,7 @@ class Chef
           require 'rubygems/dependency_installer'
 
           spec = Gem::DependencyInstaller.new.find_gems_with_sources(
-            Gem::Dependency.new("passenger", '>= 0')).last
+            Gem::Dependency.new("passenger", '>= 0')).all_specs.last
 
           if spec.nil?
             raise Chef::RVMPassenger::GemVersionNotFound,
@@ -44,7 +44,7 @@ class Chef
               "there are any connection problem with the gem sources."
           end
 
-          node.set[:rvm_passenger][:version] = spec[0].version.to_s
+          node.set[:rvm_passenger][:version] = spec.version.to_s
           Chef::Log.debug(%{Setting node['rvm_passenger']['version'] = } +
             %{"#{node['rvm_passenger']['version']}"})
         end
